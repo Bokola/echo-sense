@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# Usage: ./deploy_es {version} {configs / yaml files...}
+
 INDEX_YAML="index.yaml"
 CRON_YAML="cron.yaml"
 QUEUE_YAML="queue.yaml"
