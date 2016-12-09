@@ -1345,6 +1345,7 @@ class SensorProcessTask(db.Model):
         self.running = False
         self.status_last_run = PROCESS.CLEANED_UP
         self.narrative_last_run = "Cleaned up..."
+        logging.debug("Cleaning up process task: %s" % self)
         if ignore_unprocessed:
             self.dt_last_record = datetime.now()
 
@@ -1429,9 +1430,11 @@ class SensorProcessTask(db.Model):
             if self.is_running():
                 logging.info("Not scheduling future run, currently running")
                 duration = self.last_run_duration()
-                if duration and duration > 60*60:  # 1 hr
+                if duration and duration > 60*LONG_RUNNING_MINS:  # 1 hr
                     warning_message = "Long run duration: %s seconds for %s" % (duration, str(self))
-                    logging.warning(warning_message)
+                    if AUTO_CLEAN_LONG_RUNNING:
+                        self.clean_up()
+                        self.put()
                     if tools.not_throttled("long_running_task"):
                         deferred.defer(mail.send_mail, SENDER_EMAIL, NOTIF_EMAILS, EMAIL_PREFIX + " Long Running Task", warning_message)
             else:
