@@ -105,7 +105,7 @@ class DataInbox(handlers.JsonRequestHandler):
                     s.put()
                     if s.target:
                         s.target.dt_updated = s.dt_updated
-                        s.target.put()
+                        s.target.put_async()
                     s.schedule_next_processing()
                     success = True
                 else:
