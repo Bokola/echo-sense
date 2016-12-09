@@ -809,7 +809,7 @@ class Sensor(UserAccessible):
                                     _r = None
                                 if _r:
                                     put_records.append(_r)
-                        db.put(put_records)
+                        db.put_async(put_records)
                 else:
                     logging.warning("Can't save records - no type for %s" % self)
         return len(put_records)
