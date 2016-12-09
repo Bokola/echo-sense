@@ -1436,7 +1436,7 @@ class SensorProcessTask(db.Model):
                         self.clean_up()
                         self.put()
                     if tools.not_throttled("long_running_task"):
-                        deferred.defer(mail.send_mail, SENDER_EMAIL, NOTIF_EMAILS, EMAIL_PREFIX + " Long Running Task", warning_message)
+                        deferred.defer(mail.send_mail, SENDER_EMAIL, NOTIF_EMAILS, EMAIL_PREFIX + " Long Running Task - Auto-cleaning: %s" % AUTO_CLEAN_LONG_RUNNING, warning_message)
             else:
                 mins = max([int(process.interval / 60.), 1])
                 tools.add_batched_task(
