@@ -36,16 +36,18 @@ def send_sms(enterprise, phone, message):
     AT_USERNAME = enterprise.get_gateway_property('atalking', 'username')
     AT_FROM_SHORTCODE = enterprise.get_gateway_property('atalking', 'shortcode')
     AT_API_KEY = enterprise.get_gateway_property('atalking', 'ApiKey')
-    if not tools.on_dev_server() and (AT_USERNAME and AT_FROM_SHORTCODE and AT_API_KEY):
+    if not tools.on_dev_server() and (AT_USERNAME and AT_API_KEY):
         url = "http://api.africastalking.com/version1/messaging"
-        enc = urllib.urlencode([
+        params = [
             ('username', AT_USERNAME),
             ('to', '+' + phone),
-            ('from', AT_FROM_SHORTCODE),
             ('message', message),
             ('bulkSMSMode', 1),
             ('enqueue', 1)
-        ])
+        ]
+        if AT_FROM_SHORTCODE:
+            params.append(('from', AT_FROM_SHORTCODE))
+        enc = urllib.urlencode(params)
         headers = {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Accept': "application/json",
@@ -54,6 +56,8 @@ def send_sms(enterprise, phone, message):
         response = urlfetch.fetch(url=url, payload=enc, method="POST", deadline=60, headers=headers)
         if response.status_code == 200:
             logging.debug(response.content)
+        else:
+            logging.warning(response.status_code)
 
 def send_message(user, message, **additional_params):
     if user.alert_channel == CHANNEL.SMS and user.phone:
