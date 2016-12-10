@@ -99,7 +99,7 @@ class DataInbox(handlers.JsonRequestHandler):
                         data['count'] = len(records)
                 else:
                     logging.error("Unsupported format: %s" % format)
-                n_records = s.saveRecords(records)
+                n_records = s.saveRecords(records, async_put=not tools.on_dev_server())
                 if n_records:
                     s.dt_updated = datetime.now()
                     s.put()
