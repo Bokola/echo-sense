@@ -102,7 +102,7 @@ class DataInbox(handlers.JsonRequestHandler):
                 n_records = s.saveRecords(records, async_put=not tools.on_dev_server())
                 if n_records:
                     s.dt_updated = datetime.now()
-                    s.put()
+                    db.put_async(s)
                     if s.target:
                         s.target.dt_updated = s.dt_updated
                         db.put_async(s.target)
