@@ -69,6 +69,7 @@ class DataInbox(handlers.JsonRequestHandler):
         message = None
         data = {}
         eid = int(eid)
+        async_puts = not tools.on_dev_server() # prod only
         error = 0
         if sensor_kn:
             ekey = db.Key.from_path('Enterprise', eid)
@@ -102,10 +103,16 @@ class DataInbox(handlers.JsonRequestHandler):
                 n_records = s.saveRecords(records, async_put=not tools.on_dev_server())
                 if n_records:
                     s.dt_updated = datetime.now()
-                    db.put_async(s)
+                    if async_puts:
+                        db.put_async(s)
+                    else:
+                        s.put()
                     if s.target:
                         s.target.dt_updated = s.dt_updated
-                        db.put_async(s.target)
+                        if async_puts:
+                            db.put_async(s.target)
+                        else:
+                            s.target.put()
                     s.schedule_next_processing()
                     success = True
                 else:
