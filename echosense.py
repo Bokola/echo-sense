@@ -66,7 +66,7 @@ app = webapp2.WSGIApplication(
       webapp2.Route('/api/sensor/<kn>', handler=api.SensorAPI, handler_method="detail", methods=["GET"], name="SensorAPI"),
       webapp2.Route('/api/sensor/<kn>/action/<action>', handler=api.SensorAPI, handler_method="action", methods=["POST"], name="SensorAPI"),
       webapp2.Route('/api/data', handler=api.DataAPI, handler_method="list", methods=["GET"], name="DataAPI"),
-      webapp2.Route('/api/data/<sensor_kn>/<kn>', handler=api.DataAPI, handler_method="detail", methods=["GET"], name="DataAPI"),
+      webapp2.Route('/api/data/<sensor_kn>/<ts>', handler=api.DataAPI, handler_method="detail", methods=["GET"], name="DataAPI"),
       webapp2.Route('/api/analysis', handler=api.AnalysisAPI, handler_method="list", methods=["GET"], name="AnalysisAPI"),
       webapp2.Route('/api/analysis/<akn>', handler=api.AnalysisAPI, handler_method="detail", methods=["GET"], name="AnalysisAPI"),
       webapp2.Route('/api/analysis/multi/<akn_list>', handler=api.AnalysisAPI, handler_method="detail_multi", methods=["GET"], name="AnalysisAPI"),

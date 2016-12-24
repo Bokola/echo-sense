@@ -1579,8 +1579,7 @@ class Payment(UserAccessible):
 
 class Record(db.Expando):
     """
-    Parent - Sensor
-    Key - Name: timestamp (ms, avoid duplicates)
+    Key - Name: [ent id]_[sensor key name]_[timestamp (ms)]
     With abstract dynamic columns defined by sensor's schema
     """
     enterprise = db.ReferenceProperty(Enterprise)
@@ -1635,11 +1634,25 @@ class Record(db.Expando):
         return tools.unixtime(self.dt_recorded)
 
     @staticmethod
-    def Get(enterprise, sensor_kn, kn):
-        key = db.Key.from_path('Enterprise', enterprise.key().id(), 'Sensor', sensor_kn, 'Record', kn)
-        if key:
-            return Record.get(key)
-        return None
+    def Get(ts, enterprise, sensor=None, sensor_kn=None):
+        '''
+        Get a Record
+
+        Args:
+            ts: timestamp (ms)
+            enterprise (Enterprise())
+            Either::
+                sensor (Sensor())
+            Or::
+                sensor_kn (str)
+
+        '''
+        if sensor or sensor_kn:
+            if not sensor_kn:
+                sensor_kn = sensor.key().name()
+            kn = Record.kn(enterprise.key().id(), sensor_kn, ts)
+            logging.debug(kn)
+            return Record.get_by_key_name(kn)
 
     @staticmethod
     def Fetch(sensor, limit=50, dt_start=None, dt_end=None, downsample=DOWNSAMPLE.NONE):
@@ -1664,7 +1677,7 @@ class Record(db.Expando):
             ds_prop = None
             projection = None
             distinct = False
-        q = db.Query(Record, projection=projection, distinct=distinct).ancestor(sensor)
+        q = db.Query(Record, projection=projection, distinct=distinct).filter("sensor =", sensor)
 
         if downsample:
             q.order("-"+ds_prop)
@@ -1705,6 +1718,11 @@ class Record(db.Expando):
             return q.fetch(limit=limit)
 
     @staticmethod
+    def kn(eid, sensor_kn, ts):
+        kn = "%s_%s_%s" % (eid, sensor_kn, int(ts))  # ms
+        return kn
+
+    @staticmethod
     def Create(ts, sensor, data, apply_roles=False, schema=None, expression_parser_by_col={}, put=False, allow_future=False, future_to_now=False, now_ms=None):
         ACCEPT_FUTURE_BUFFER_SECS = 5*60
         r = None
@@ -1718,7 +1736,7 @@ class Record(db.Expando):
         if sane_ts and future and future_to_now:
             logging.warning("time received is %.1f seconds in future, interpreting as present" % (-1*ms_ago / 1000.))
             ts = now_ms
-        kn = str(int(ts)) # ms
+        kn = Record.kn(tools.getKey(Sensor, 'enterprise', sensor, asID=True), sensor.key().name(), ts)
         if not sane_ts:
             logging.warning("Non-sane ts in Record.Create, not creating: %s" % ts)
         else:
@@ -1727,7 +1745,7 @@ class Record(db.Expando):
                 hour = int(minute / 60)
                 targetkey = tools.getKey(Sensor, 'target', sensor, asID=False, keyObj=True)
                 sensortypekey = tools.getKey(Sensor, 'sensortype', sensor, asID=False, keyObj=True)
-                r = Record(key_name=kn, parent=sensor, sensor=sensor, target=targetkey,
+                r = Record(key_name=kn, sensor=sensor, target=targetkey,
                     sensortype=sensortypekey, dt_recorded=tools.dt_from_ts(ts), minute=minute,
                     hour=hour, enterprise=sensor.enterprise)
                 # First pass extracts record data as defined by schema, and creates dict of pending calculations
