@@ -25,6 +25,8 @@ NOTIF_EMAILS = [APP_OWNER]
 SENDER_EMAIL = "%s Notifications <noreply@%s.appspotmail.com>" % (SITENAME, APPNAME)
 
 WARN_BATT_LEVEL = 0.15
+LONG_RUNNING_MINS = 60  # 1 hr (definitino of long running task)
+AUTO_CLEAN_LONG_RUNNING = True
 
 GA_ID = "UA-34753309-3"
 

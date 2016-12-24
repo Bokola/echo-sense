@@ -37,7 +37,7 @@ class SensorProcessWorker(object):
         self.analyses = {}
         self.last_record = None
         self.sensorprocess.start(self.worker_start)
-        self.sensorprocess.put()
+        db.put_async(self.sensorprocess)
         self.records_processed = 0
         self.continuations = 0
 

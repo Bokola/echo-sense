@@ -774,7 +774,7 @@ class Sensor(UserAccessible):
             else:
                 self.target = None
 
-    def saveRecords(self, records):
+    def saveRecords(self, records, async_put=False):
         '''
         Takes records as list of dicts and saves to datastore
         Dicts must contain a value for 'timestamp' as well as at least one
@@ -809,7 +809,10 @@ class Sensor(UserAccessible):
                                     _r = None
                                 if _r:
                                     put_records.append(_r)
-                        db.put(put_records)
+                        if async_put:
+                            db.put_async(put_records)
+                        else:
+                            db.put(put_records)
                 else:
                     logging.warning("Can't save records - no type for %s" % self)
         return len(put_records)
@@ -1436,7 +1439,7 @@ class SensorProcessTask(db.Model):
                         self.clean_up()
                         self.put()
                     if tools.not_throttled("long_running_task"):
-                        deferred.defer(mail.send_mail, SENDER_EMAIL, NOTIF_EMAILS, EMAIL_PREFIX + " Long Running Task", warning_message)
+                        deferred.defer(mail.send_mail, SENDER_EMAIL, NOTIF_EMAILS, EMAIL_PREFIX + " Long Running Task - Auto-cleaning: %s" % AUTO_CLEAN_LONG_RUNNING, warning_message)
             else:
                 mins = max([int(process.interval / 60.), 1])
                 tools.add_batched_task(
