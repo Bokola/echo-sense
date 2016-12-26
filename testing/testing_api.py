@@ -129,12 +129,12 @@ class APITestCase(BaseTestCase):
 
         # Test detail
         params = self.__commonParams()
-        params['with_records'] = 10
         result = self.get_json("/api/data/%s/%s" % ("000-100", r1_ts), params)
         self.assertTrue(result['success'])
         _r = result['data']['record']
         self.assertEqual(_r['sensor_kn'], "000-100")
         self.assertEqual(_r['ts'], r1_ts)
+        self.assertEqual(_r['kn'], "%s_%s_%s" % (self.e.key().id(), self.sensor1.key().name(), int(r1_ts)))
 
     def testAnalysisAPIs(self):
         self.analysis = Analysis.Get(self.e, "ROLLUP", get_or_insert=True)
