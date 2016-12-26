@@ -1,7 +1,6 @@
 var alt = require('config/alt');
 var TargetActions = require('actions/TargetActions');
 import {findItemById, findIndexById} from 'utils/store-utils';
-import router from 'config/router';
 var toastr = require('toastr');
 var util = require('utils/util');
 

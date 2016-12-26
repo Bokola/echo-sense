@@ -77,6 +77,8 @@ check_services() {
     done
 }
 
+# Cover downstream sudos
+sudo echo ""
 version=$1
 deploy_configs="${@:2}" # Remaining args
 # first do a git pull to bring down tags
