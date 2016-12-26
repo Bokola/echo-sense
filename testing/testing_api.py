@@ -4,9 +4,10 @@
 from google.appengine.ext import db
 from datetime import datetime, timedelta
 import json
+import tools
 from base_test_case import BaseTestCase
 from constants import *
-from models import Enterprise, User, Sensor, SensorType, Analysis
+from models import Enterprise, User, Sensor, SensorType, Analysis, Record
 from echosense import app as tst_app
 
 TEST_NUM = "254729000000"
@@ -35,7 +36,12 @@ class APITestCase(BaseTestCase):
         self.u.put()
 
         self.st = SensorType.Create(self.e)
-        self.st.Update(alias="geo")
+
+        self.st.Update(alias="geo", schema=json.dumps({
+            'location': {
+                'type': 'location'
+            }
+        }))
         self.st.put()
 
     def __commonParams(self):
@@ -102,6 +108,33 @@ class APITestCase(BaseTestCase):
         self.assertIsNotNone(s)
         self.assertEqual(s.name, "Geo Sensor 1")
         self.assertEqual(s.sensortype.key(), self.st.key())
+
+    def testRecordAPIs(self):
+        self.sensor1 = Sensor.Create(self.e, "000-100", self.st.key().id())
+        self.sensor1.put()
+        now = datetime.now()
+        r1_ts = tools.unixtime(now)
+        r = Record.Create(tools.unixtime(now), self.sensor1, {'location': '51.5033640,-0.1276250'})
+        r2 = Record.Create(tools.unixtime(now) + 1000, self.sensor1, {'location': '51.5033640,-0.1276250'})
+        db.put([r, r2])
+
+        # Test list
+        params = self.__commonParams()
+        params.update({
+            'sensor_kn': "000-100"
+        })
+        result = self.get_json("/api/data", params)
+        self.assertTrue(result['success'])
+        self.assertEqual(len(result['data']['records']), 2)
+
+        # Test detail
+        params = self.__commonParams()
+        params['with_records'] = 10
+        result = self.get_json("/api/data/%s/%s" % ("000-100", r1_ts), params)
+        self.assertTrue(result['success'])
+        _r = result['data']['record']
+        self.assertEqual(_r['sensor_kn'], "000-100")
+        self.assertEqual(_r['ts'], r1_ts)
 
     def testAnalysisAPIs(self):
         self.analysis = Analysis.Get(self.e, "ROLLUP", get_or_insert=True)
