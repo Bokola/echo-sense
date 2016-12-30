@@ -324,10 +324,10 @@ class DataAPI(handlers.JsonRequestHandler):
         self.json_out(data, success=success, message=message)
 
     @authorized.role('api')
-    def detail(self, sensor_kn, kn, d):
+    def detail(self, sensor_kn, ts, d):
         success = False
         message = None
-        r = Record.Get(self.enterprise, sensor_kn, kn)
+        r = Record.Get(ts, self.enterprise, sensor_kn=sensor_kn)
         if r:
             success = True
         else:

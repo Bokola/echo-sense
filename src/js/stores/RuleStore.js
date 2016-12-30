@@ -2,7 +2,6 @@ var alt = require('config/alt');
 var RuleActions = require('actions/RuleActions');
 import {findItemById, findIndexById} from 'utils/store-utils';
 import {isEmpty} from 'lodash';
-import router from 'config/router';
 var toastr = require('toastr');
 var util = require('utils/util');
 

@@ -200,7 +200,7 @@ export default class DataViewer extends React.Component {
       var params = {
         sensorKn: this.props.params.sensorKn
       };
-      this.props.history.pushState(null, `/app/data/${params.sensorKn}/record/${r.kn}`);
+      this.props.history.pushState(null, `/app/data/${params.sensorKn}/record/${r.ts}`);
     }
 
     handle_export_request() {
