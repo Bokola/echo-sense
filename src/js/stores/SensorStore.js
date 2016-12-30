@@ -1,7 +1,6 @@
 var alt = require('config/alt');
 var SensorActions = require('actions/SensorActions');
 import {findItemById, findIndexById} from 'utils/store-utils';
-import router from 'config/router';
 var toastr = require('toastr');
 var util = require('utils/util');
 import {merge} from 'lodash';

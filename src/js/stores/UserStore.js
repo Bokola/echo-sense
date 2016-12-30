@@ -1,7 +1,6 @@
 var alt = require('config/alt');
 var UserActions = require('actions/UserActions');
 import {findItemById, findIndexById} from 'utils/store-utils';
-import router from 'config/router';
 var toastr = require('toastr');
 var AppConstants = require('constants/AppConstants');
 import history from 'config/history'

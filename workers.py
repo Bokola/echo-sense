@@ -37,10 +37,9 @@ class SensorProcessWorker(object):
         self.analyses = {}
         self.last_record = None
         self.sensorprocess.start(self.worker_start)
-        db.put_async(self.sensorprocess)
+        self.sensorprocess.put()
         self.records_processed = 0
         self.continuations = 0
-
 
     def __str__(self):
         return "<SensorProcessWorker sensor_kn=%s from=%s to=%s />" % (self.sensor.key().name(), self._query_from(), self._query_until())
