@@ -1435,6 +1435,7 @@ class SensorProcessTask(db.Model):
                 duration = self.last_run_duration()
                 if duration and duration > 60*LONG_RUNNING_MINS:  # 1 hr
                     warning_message = "Long run duration: %s seconds for %s" % (duration, str(self))
+                    logging.warning(warning_message)
                     if AUTO_CLEAN_LONG_RUNNING:
                         self.clean_up()
                         self.put()
