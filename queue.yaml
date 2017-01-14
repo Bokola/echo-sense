@@ -4,9 +4,9 @@ queue:
 - name: processing-queue
   rate: 4/s
 - name: processing-queue-new
-  rate: 10/s
-  bucket_size: 3
-  max_concurrent_requests: 20
+  rate: 4/s
+  bucket_size: 2
+  max_concurrent_requests: 40
 - name: sms-out-queue
   rate: 3/s
   bucket_size: 10

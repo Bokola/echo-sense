@@ -1447,7 +1447,7 @@ class SensorProcessTask(db.Model):
                     bgRunSensorProcess,
                     self.process_task_name(),
                     interval_mins=mins,
-                    max_jitter_pct=0.2,
+                    max_jitter_pct=0.3,
                     sptkey=str(self.key()),
                     _queue="processing-queue-new")
         else:

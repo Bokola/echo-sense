@@ -1,4 +1,3 @@
-from google.appengine.ext import db
 from datetime import datetime
 from lib.pyparsing import Word, Keyword, alphas, ParseException, Literal, CaselessLiteral \
 , Combine, Optional, nums, Or, Forward, ZeroOrMore, StringEnd, alphanums, oneOf \
