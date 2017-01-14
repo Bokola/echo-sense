@@ -990,3 +990,12 @@ def retry(fn, *args, **kwargs):
             kwargs["tries"] = tries
             result = retry(fn, *args, **kwargs)
     return result
+
+
+def put_async_prod(entities):
+    if on_dev_server():
+        # Sync - Enable tests to run
+        db.put(entities)
+    else:
+        # Async (prod)
+        db.put_async(entities)
