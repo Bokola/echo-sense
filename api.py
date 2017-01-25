@@ -1483,6 +1483,7 @@ class SendEmail(handlers.JsonRequestHandler):
     def get(self):
         self.post()
 
+
 class SearchAPI(handlers.JsonRequestHandler):
 
     @authorized.role('user')
@@ -1492,7 +1493,7 @@ class SearchAPI(handlers.JsonRequestHandler):
             index.delete(doc_key)
             self.response.out.write("OK")
 
-    @authorized.role('user')
+    @authorized.role('api')
     def search(self, d):
         RESULT_LIMIT = 20
         term = self.request.get('term')

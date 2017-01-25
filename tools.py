@@ -981,7 +981,7 @@ def retry(fn, *args, **kwargs):
         tries -= 1  # consume an attempt
         result = fn(*args, **kwargs)
     except Exception, ex:
-        logging.error("Error executing %s: %s, remaining retries %d, will try again in %.1f secs" % (fn.__name__, ex, tries, delay))
+        logging.warning("Error executing %s: %s, remaining retries %d, will try again in %.1f secs" % (fn.__name__, ex, tries, delay))
         if tries > 0:
             time.sleep(delay)  # wait...
             delay *= backoff  # make future wait longer
