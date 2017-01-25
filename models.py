@@ -663,7 +663,7 @@ class Sensor(UserAccessible):
     def __str__(self):
         return self.name if self.name else "Sensor"
 
-    def json(self, with_records=0, with_alarms=0, with_analyses=0, record_downsample=DOWNSAMPLE.NONE, rule_id_filter=None, with_processers=False, with_sensortype=False):
+    def json(self, with_records=0, records_since=0, with_alarms=0, with_analyses=0, record_downsample=DOWNSAMPLE.NONE, rule_id_filter=None, with_processers=False, with_sensortype=False):
         res = {
             'key': str(self.key()),
             'kn': self.key().name(),
@@ -685,7 +685,10 @@ class Sensor(UserAccessible):
             res['lat'] = self.location.lat
             res['lon'] = self.location.lon
         if with_records:
-            records = Record.Fetch(self, downsample=record_downsample, limit=with_records)
+            dt_start = None
+            if records_since:
+                dt_start = tools.dt_from_ts(records_since)
+            records = Record.Fetch(self, dt_start=dt_start, downsample=record_downsample, limit=with_records)
             res['records'] = [r.json() for r in records]
         if with_alarms:
             rule = None
