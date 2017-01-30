@@ -141,10 +141,6 @@ class ExpressionParser(object):
             return True
         return False
 
-    def __evalString(self, toks):
-        val = toks[0]
-        return str(val).upper().strip()
-
     def __evalConstant(self, toks):
         return float(toks[0])
 
@@ -307,9 +303,8 @@ class ExpressionParser(object):
             aggregate_column.setParseAction(self.__evalAggregateColumn) | \
             single_column.setParseAction(self.__evalSingleColumn) | \
             ((real | integer).setParseAction(self.__evalConstant)) | \
-            quotedString.setParseAction(self.__evalString).addParseAction(removeQuotes) | \
             current_value.setParseAction(self.__evalCurrentValue) | \
-            identifier.setParseAction(self.__evalString)
+            quotedString.setParseAction(removeQuotes)
 
         arith_expr << operatorPrecedence(operand,
             [
