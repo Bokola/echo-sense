@@ -807,7 +807,8 @@ def add_batched_task(callable, name_prefix, interval_mins=5, max_jitter_pct=0.0,
     runAt = batched_runtime_with_jitter(now, interval_mins=interval_mins,
         max_jitter_pct=max_jitter_pct, name_prefix=name_prefix)
 
-    taskName = "bt_%s_%s_%s" % (name_prefix, callable.__name__, unixtime(runAt))
+    ms_run_at = unixtime(runAt)
+    taskName = "bt_%s_%s_%s" % (name_prefix, callable.__name__, ms_run_at)
     # logging.debug("Scheduling task for %s - %s" % (runAt, taskName))
     safe_add_task(callable, _name=taskName, _eta=runAt, *args, **kwargs)
 
@@ -942,3 +943,59 @@ def not_throttled(key_suffix):
     if not throttled:
         memcache.add(mckey, 1, exception_expiration)
     return not throttled
+
+def retry(fn, *args, **kwargs):
+    '''Retries a function or method until it returns True.
+
+    delay sets the initial delay in seconds, and backoff sets the factor by which
+    the delay should lengthen after each failure. backoff must be greater than 1,
+    or else it isn't really a backoff. tries must be at least 0, and delay
+    greater than 0.'''
+    MAX_SLEEP_TIME = 60
+    DEFAULT_TRIES = 6
+    DEFAULT_DELAY = 2
+    DEFAULT_BACKOFF = 1.5
+    #Sleep for 2 secs then 3, 4.5, ....
+
+    tries = kwargs.pop("tries", DEFAULT_TRIES)
+    delay = kwargs.pop("delay", DEFAULT_DELAY)
+    backoff = kwargs.pop("backoff", DEFAULT_BACKOFF)
+
+    if backoff < 1:
+        raise ValueError("backoff must be greater or equal to 1")
+
+    tries = math.floor(tries)
+    if tries < 0:
+        raise ValueError("tries must be 0 or greater")
+
+    if delay <= 0:
+        raise ValueError("delay must be greater than 0")
+
+    #Sum of a geometric series
+    total_sleep_time = delay * ((1-backoff**tries)/(1-backoff))
+    if total_sleep_time > MAX_SLEEP_TIME:
+        raise ValueError("Retry time in worst case scenario should not exceed 60 secs, you have %f, use less tries or less backoff" % total_sleep_time)
+
+    result = False
+    try:
+        tries -= 1  # consume an attempt
+        result = fn(*args, **kwargs)
+    except Exception, ex:
+        logging.warning("Error executing %s: %s, remaining retries %d, will try again in %.1f secs" % (fn.__name__, ex, tries, delay))
+        if tries > 0:
+            time.sleep(delay)  # wait...
+            delay *= backoff  # make future wait longer
+            kwargs["backoff"] = backoff
+            kwargs["delay"] = delay
+            kwargs["tries"] = tries
+            result = retry(fn, *args, **kwargs)
+    return result
+
+
+def put_async_prod(entities):
+    if on_dev_server():
+        # Sync - Enable tests to run
+        db.put(entities)
+    else:
+        # Async (prod)
+        db.put_async(entities)

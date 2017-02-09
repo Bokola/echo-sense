@@ -1,9 +1,7 @@
 import django_version
-import re, logging, string
+import logging
 
-from google.appengine.ext import webapp, db, deferred
-from google.appengine.api import users, images, memcache, taskqueue
-from google.appengine.ext.webapp import template
+from google.appengine.ext import webapp, db
 
 from models import *
 from constants import *

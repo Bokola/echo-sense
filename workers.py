@@ -179,7 +179,7 @@ class SensorProcessWorker(object):
                 self._run_processer(processer, records=records, run_ms=run_ms)
 
         # TODO: Can we do this in finish?
-        db.put(self.analyses.values())
+        tools.put_async_prod(self.analyses.values())
 
         logging.debug("Ran batch of %d." % (len(records)))
         self.records_processed += len(records)
@@ -321,9 +321,11 @@ class SensorProcessWorker(object):
             self.sensorprocess.dt_last_record = self.last_record.dt_recorded
         if self.updated_alarm_dict:
             alarms = self.updated_alarm_dict.values()
-            db.put(alarms)
+            tools.put_async_prod(alarms)
         self.sensorprocess.finish(result, narrative)
-        self.sensorprocess.put()
+        # Retry if we hit a contention error since
+        # it is important we put the spt to update running status
+        tools.retry(self.sensorprocess.put)
         logging.debug("FINISHED %s in %s seconds. %s records, %s continuations. Last record: %s. Status: %s" % (
             self.sensorprocess,
             self.sensorprocess.last_run_duration(),

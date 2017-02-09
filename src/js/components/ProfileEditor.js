@@ -6,7 +6,7 @@ var util = require('../utils/util');
 var ResourceDropzone = require('./ResourceDropzone');
 var toastr = require('toastr');
 
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 import {changeHandler} from '../utils/component-utils';
 
 var mui = require('material-ui'),

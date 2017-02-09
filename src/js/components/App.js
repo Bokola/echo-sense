@@ -22,7 +22,7 @@ var MenuItem = mui.MenuItem;
 var UserActions = require('actions/UserActions');
 var UserStore = require('stores/UserStore');
 var SearchWidget = require('components/shared/SearchWidget');
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 import {authDecorator} from 'utils/component-utils';
 
 @connectToStores

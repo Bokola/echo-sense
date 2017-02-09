@@ -19,7 +19,7 @@ var mui = require('material-ui'),
   FlatButton = mui.FlatButton,
   FontIcon = mui.FontIcon;
 
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 
 @connectToStores
 export default class Manage extends React.Component {
@@ -130,6 +130,7 @@ export default class Manage extends React.Component {
                     { name: 'group_ids', label: "Groups", editable: true, editOnly: true, inputType: "select", multiple: true, opts: group_opts }
                 ],
                 'add_params': {},
+
                 'unique_key': 'key',
                 'max': 50,
                 getListFromJSON: function(data) { return data.data.targets; },

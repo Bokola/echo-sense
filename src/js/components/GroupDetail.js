@@ -23,7 +23,7 @@ var IconMenu = mui.IconMenu;
 var MenuItem = mui.MenuItem;
 var api = require('utils/api');
 import {merge} from 'lodash';
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 import history from 'config/history'
 
 var Link = Router.Link;

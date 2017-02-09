@@ -19,7 +19,7 @@ var mui = require('material-ui'),
   FlatButton = mui.FlatButton,
   FontIcon = mui.FontIcon;
 
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 
 @connectToStores
 export default class ManageRules extends React.Component {

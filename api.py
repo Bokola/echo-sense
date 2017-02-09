@@ -372,6 +372,7 @@ class SensorAPI(handlers.JsonRequestHandler):
         with_processers = self.request.get_range('with_processers') == 1
         with_sensortype = self.request.get_range('with_sensortype') == 1
         record_downsample = self.request.get_range('record_downsample')
+        records_since = self.request.get_range('records_since', default=0) # 0 - no cutoff
         rule_id_filter = self.request.get_range('rule_id_filter')
 
         s = Sensor.get_by_key_name(kn, parent=d['enterprise'])
@@ -382,6 +383,7 @@ class SensorAPI(handlers.JsonRequestHandler):
         data = {
             'sensor': s.json(
                 with_records=with_records,
+                records_since=records_since,
                 with_alarms=with_alarms,
                 with_processers=with_processers,
                 with_analyses=with_analyses,
@@ -648,12 +650,12 @@ class TargetAPI(handlers.JsonRequestHandler):
         success = False
         message = None
 
-        _max = self.request.get_range('max', max_value=500, default=100)
+        page, _max, offset = tools.paging_params(self.request, limit_default=100)
         ms_updated_since = self.request.get_range('updated_since', default=0)  # ms
         group_id = self.request.get_range("group_id")
 
         updated_since = tools.dt_from_ts(ms_updated_since) if ms_updated_since else None
-        targets = Target.Fetch(d['user'], updated_since=updated_since, group_id=group_id, limit=_max)
+        targets = Target.Fetch(d['user'], updated_since=updated_since, group_id=group_id, limit=_max, offset=offset)
         success = True
 
         data = {
@@ -1483,6 +1485,7 @@ class SendEmail(handlers.JsonRequestHandler):
     def get(self):
         self.post()
 
+
 class SearchAPI(handlers.JsonRequestHandler):
 
     @authorized.role('user')
@@ -1492,7 +1495,7 @@ class SearchAPI(handlers.JsonRequestHandler):
             index.delete(doc_key)
             self.response.out.write("OK")
 
-    @authorized.role('user')
+    @authorized.role('api')
     def search(self, d):
         RESULT_LIMIT = 20
         term = self.request.get('term')

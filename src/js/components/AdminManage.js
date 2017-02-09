@@ -6,7 +6,7 @@ var AppConstants = require('constants/AppConstants');
 var SensorTypeActions = require('actions/SensorTypeActions');
 var SensorTypeStore = require('stores/SensorTypeStore');
 var util = require('utils/util');
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 var mui = require('material-ui'),
   FlatButton = mui.FlatButton,
   FontIcon = mui.FontIcon,
