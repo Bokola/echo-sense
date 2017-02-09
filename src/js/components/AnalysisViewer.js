@@ -25,7 +25,7 @@ var toastr = require('toastr');
 var FontIcon = mui.FontIcon;
 import {merge} from 'lodash';
 import {changeHandler} from 'utils/component-utils';
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 
 @connectToStores
 @changeHandler

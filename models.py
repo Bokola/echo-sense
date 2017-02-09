@@ -498,14 +498,14 @@ class Target(UserAccessible):
         return self.name
 
     @staticmethod
-    def Fetch(user, updated_since=None, group_id=None, limit=50):
+    def Fetch(user, updated_since=None, group_id=None, limit=50, offset=0):
         e = user.enterprise
         q = Target.all().ancestor(e)
         if updated_since:
             q.filter("dt_updated >", updated_since)
         elif group_id:
             q.filter("group_ids =", group_id)
-        targets = q.fetch(limit=limit)
+        targets = q.fetch(limit=limit, offset=offset)
         if user.is_admin() or user.is_account_admin():
             # Fetch all targets in ent
             return targets

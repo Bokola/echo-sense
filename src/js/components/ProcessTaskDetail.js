@@ -27,7 +27,7 @@ var MenuItem = mui.MenuItem;
 var api = require('utils/api');
 var Select = require('react-select');
 import {merge, clone} from 'lodash';
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 import history from 'config/history'
 import {changeHandler} from 'utils/component-utils';
 

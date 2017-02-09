@@ -20,7 +20,7 @@ var UserStore = require('stores/UserStore');
 var IconMenu = mui.IconMenu;
 var MenuItem = mui.MenuItem;
 var api = require('utils/api');
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 import history from 'config/history'
 import {changeHandler} from 'utils/component-utils';
 import {removeItemsById} from 'utils/store-utils';

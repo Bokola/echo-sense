@@ -16,7 +16,7 @@ var FetchedList = require('components/FetchedList');
 var bootstrap = require('bootstrap');
 var UserActions = require('actions/UserActions');
 var UserStore = require('stores/UserStore');
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 import {changeHandler} from 'utils/component-utils';
 
 @connectToStores

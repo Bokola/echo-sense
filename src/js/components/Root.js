@@ -5,7 +5,7 @@ var Router = require('react-router');
 var mui = require('material-ui');
 var UserStore = require('stores/UserStore');
 var UserActions = require('actions/UserActions');
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 
 @connectToStores
 class Root extends React.Component {

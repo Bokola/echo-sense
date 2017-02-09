@@ -9,7 +9,7 @@ var GroupActions = require('actions/GroupActions');
 var GroupStore = require('stores/GroupStore');
 var util = require('utils/util');
 import { merge } from 'lodash';
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 var mui = require('material-ui'),
   FlatButton = mui.FlatButton,
   FontIcon = mui.FontIcon;

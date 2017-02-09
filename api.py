@@ -650,12 +650,12 @@ class TargetAPI(handlers.JsonRequestHandler):
         success = False
         message = None
 
-        _max = self.request.get_range('max', max_value=500, default=100)
+        page, _max, offset = tools.paging_params(self.request, limit_default=100)
         ms_updated_since = self.request.get_range('updated_since', default=0)  # ms
         group_id = self.request.get_range("group_id")
 
         updated_since = tools.dt_from_ts(ms_updated_since) if ms_updated_since else None
-        targets = Target.Fetch(d['user'], updated_since=updated_since, group_id=group_id, limit=_max)
+        targets = Target.Fetch(d['user'], updated_since=updated_since, group_id=group_id, limit=_max, offset=offset)
         success = True
 
         data = {

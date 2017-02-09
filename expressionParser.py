@@ -145,7 +145,7 @@ class ExpressionParser(object):
         return float(toks[0])
 
     def __getArglist(self, args):
-        if type(args) is list:
+        if type(args) is list and len(args) > 0:
             first = args[0]
             if type(first) is list:
                 return first

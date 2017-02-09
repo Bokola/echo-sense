@@ -28,7 +28,7 @@ var SensorTypeActions = require('actions/SensorTypeActions');
 var SensorTypeStore = require('stores/SensorTypeStore');
 
 import {Tabs, Tab} from 'material-ui/Tabs';
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 import {changeHandler} from 'utils/component-utils';
 import {removeItemsById} from 'utils/store-utils';
 var Select = require('react-select');

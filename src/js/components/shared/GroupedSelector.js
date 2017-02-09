@@ -25,7 +25,7 @@ var GroupStore = require('stores/GroupStore');
 var IconMenu = mui.IconMenu;
 var MenuItem = mui.MenuItem;
 var api = require('utils/api');
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 import history from 'config/history'
 
 var Link = Router.Link;

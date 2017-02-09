@@ -20,7 +20,7 @@ var MenuItem = mui.MenuItem;
 var TargetStore = require('stores/TargetStore');
 var TargetActions = require('actions/TargetActions');
 var api = require('utils/api');
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 import history from 'config/history'
 
 var Link = Router.Link;

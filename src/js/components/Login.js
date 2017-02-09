@@ -13,7 +13,7 @@ var api = require('utils/api');
 var bootstrap = require('bootstrap');
 var UserActions = require('actions/UserActions');
 var UserStore = require('stores/UserStore');
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 import {changeHandler} from 'utils/component-utils';
 
 @connectToStores

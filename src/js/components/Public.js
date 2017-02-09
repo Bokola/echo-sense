@@ -22,7 +22,7 @@ var UserActions = require('actions/UserActions');
 var UserStore = require('stores/UserStore');
 var AppConstants = require('constants/AppConstants');
 
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 import {changeHandler} from 'utils/component-utils';
 
 @connectToStores
