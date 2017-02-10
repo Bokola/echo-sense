@@ -14,8 +14,8 @@ var mui = require('material-ui'),
   IconButton = mui.IconButton,
   TextField = mui.TextField,
   RadioButtonGroup = mui.RadioButtonGroup;
-var history = require('config/history');
 import {changeHandler} from 'utils/component-utils';
+import {browserHistory} from 'react-router';
 
 @changeHandler
 export default class SearchWidget extends React.Component {
@@ -73,9 +73,9 @@ export default class SearchWidget extends React.Component {
   goto_result(r) {
     // Redirect depending on r type
     var type = r.type;
-    if (type == 'group') history.pushState(null, `/app/groups/${r.id}`);
-    else if (type == 'target') history.pushState(null, `/app/targets/${r.id}`);
-    else if (type == 'sensor') history.pushState(null, `/app/sensors/${r.id}`);
+    if (type == 'group') browserHistory.push(`/app/groups/${r.id}`);
+    else if (type == 'target') browserHistory.push(`/app/targets/${r.id}`);
+    else if (type == 'sensor') browserHistory.push(`/app/sensors/${r.id}`);
     this.props.onRequestClose();
   }
 

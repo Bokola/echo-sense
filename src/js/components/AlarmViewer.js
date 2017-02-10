@@ -20,7 +20,7 @@ var bootbox = require('bootbox');
 var Select = require('react-select');
 import connectToStores from 'alt-utils/lib/connectToStores';
 import {changeHandler} from 'utils/component-utils';
-import history from 'config/history'
+import {browserHistory} from 'react-router';
 
 var Link = Router.Link;
 

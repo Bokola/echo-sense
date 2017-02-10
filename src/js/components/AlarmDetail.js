@@ -12,7 +12,7 @@ var IconButton = mui.IconButton;
 var util = require('utils/util');
 var toastr = require('toastr');
 var bootbox = require('bootbox');
-import history from 'config/history'
+import {browserHistory} from 'react-router';
 
 var Link = Router.Link;
 
@@ -79,7 +79,7 @@ var AlarmDetail = React.createClass({displayName: 'AlarmDetail',
         end: a.ts_end + this.state.buffer_ms,
         col: a.rule_column
       }
-      history.replaceState(null, `/app/data/${params.sensorKn}?sta=${query.sta}&end=${query.end}&col=${query.col}`);
+      browserHistory.push(`/app/data/${params.sensorKn}?sta=${query.sta}&end=${query.end}&col=${query.col}`);
     }
   },
   render: function() {
@@ -127,10 +127,6 @@ var AlarmDetail = React.createClass({displayName: 'AlarmDetail',
       );
   }
 });
-
-AlarmDetail.contextTypes = {
-  router: React.PropTypes.func
-};
 
 
 module.exports = AlarmDetail;

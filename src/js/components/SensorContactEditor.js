@@ -142,7 +142,7 @@ export default class SensorContactEditor extends React.Component {
             <TextField floatingLabelText="ID / Role" hint="No spaces, lower case" value={form.role} onChange={this.changeHandler.bind(this, 'form', 'role')} fullWidth={true} />
 
             <h3>Users</h3>
-            <FetchedList url="/api/user" renderItem={this.render_user.bind(this)} autofetch={true} listProp="users" />
+            <FetchedList url="/api/user" renderItem={this.render_user.bind(this)} autofetch={true} listProp="users" paging_enabled={true} />
 
           </Dialog>
         </div>

@@ -163,8 +163,19 @@ class UserAPI(handlers.JsonRequestHandler):
         message = None
         page, max, offset = tools.paging_params(self.request, limit_default=100)
         order_by = self.request.get('order_by')
-        users = User.Fetch(self.enterprise, order_by=order_by, limit=max, offset=offset)
-        success = True
+        email_filter = self.request.get('email')
+        users = []
+        if email_filter:
+            user = User.GetByEmail(email_filter)
+            if user:
+                users.append(user)
+                success = True
+            else:
+                message = "User with email %s not found" % email_filter
+
+        else:
+            users = User.Fetch(self.enterprise, order_by=order_by, limit=max, offset=offset)
+            success = True
         data = {
             'users': [user.json() for user in users]
             }

@@ -24,7 +24,7 @@ var IconMenu = mui.IconMenu;
 var MenuItem = mui.MenuItem;
 
 var Link = Router.Link;
-import history from 'config/history'
+import {browserHistory} from 'react-router';
 
 export default class Sensors extends React.Component {
   static defaultProps = {
@@ -69,7 +69,7 @@ export default class Sensors extends React.Component {
   }
 
   gotoSensor(kn) {
-    history.replaceState(null, `/app/sensors/${kn}`);
+    browserHistory.push(`/app/sensors/${kn}`);
   }
 
   gotoSensorObj(s) {

@@ -3,7 +3,7 @@ var UserActions = require('actions/UserActions');
 import {findItemById, findIndexById} from 'utils/store-utils';
 var toastr = require('toastr');
 var AppConstants = require('constants/AppConstants');
-import history from 'config/history'
+import {browserHistory} from 'react-router';
 
 class UserStore {
     constructor() {
@@ -47,7 +47,7 @@ class UserStore {
     onLogin(data) {
         if (data.ok) {
             this.storeUser(data.user);
-            history.replaceState(null, '/app');
+            browserHistory.push('/app');
         } else {
             this.clearUser();
             this.error = data.error;
@@ -59,7 +59,7 @@ class UserStore {
             this.clearUser();
             this.error = null;
             toastr.success("You're logged out!");
-            history.replaceState(null, '/public');
+            browserHistory.push('/public');
         }
     }
 
