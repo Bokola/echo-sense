@@ -24,7 +24,7 @@ var IconMenu = mui.IconMenu;
 var MenuItem = mui.MenuItem;
 var bootbox = require('bootbox');
 var Link = Router.Link;
-import history from 'config/history'
+import {browserHistory} from 'react-router';
 
 export default class AnalysisSettings extends React.Component {
   static defaultProps = {
@@ -48,8 +48,8 @@ export default class AnalysisSettings extends React.Component {
   }
 
   goto_task(task) {
-    if (task==null) history.replaceState(null, `/app/processing/settings`);
-    else history.replaceState(null, `/app/processing/settings/${task.id}`);
+    if (task==null) browserHistory.push(`/app/processing/settings`);
+    else browserHistory.push(`/app/processing/settings/${task.id}`);
   }
 
   closeDetail() {

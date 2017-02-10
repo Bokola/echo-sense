@@ -12,7 +12,7 @@ var IconButton = mui.IconButton;
 var util = require('utils/util');
 var toastr = require('toastr');
 var bootbox = require('bootbox');
-import history from 'config/history'
+import {browserHistory} from 'react-router';
 
 var Link = Router.Link;
 

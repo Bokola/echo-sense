@@ -24,7 +24,7 @@ var MenuItem = mui.MenuItem;
 var api = require('utils/api');
 import {merge} from 'lodash';
 import connectToStores from 'alt-utils/lib/connectToStores';
-import history from 'config/history'
+import {browserHistory} from 'react-router';
 
 var Link = Router.Link;
 
@@ -82,11 +82,11 @@ export default class GroupDetail extends React.Component {
   }
 
   gotoSensor(s) {
-    history.pushState(null, `/app/sensors/${s.kn}`);
+    browserHistory.push(`/app/sensors/${s.kn}`);
   }
 
   gotoTarget(t) {
-    history.pushState(null, `/app/targets/${t.id}`);
+    browserHistory.push(`/app/targets/${t.id}`);
   }
 
   userAdmin() {

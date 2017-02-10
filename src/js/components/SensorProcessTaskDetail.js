@@ -14,7 +14,7 @@ var util = require('utils/util');
 var toastr = require('toastr');
 var bootbox = require('bootbox');
 var api = require('utils/api');
-import history from 'config/history'
+import {browserHistory} from 'react-router';
 
 var Link = Router.Link;
 
@@ -96,8 +96,4 @@ export default class SensorProcessTaskDetail extends React.Component {
     return content;
   }
 }
-
-SensorProcessTaskDetail.contextTypes = {
-  router: React.PropTypes.func
-};
 

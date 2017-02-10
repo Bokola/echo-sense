@@ -6,7 +6,7 @@ var util = require('utils/util');
 var $ = require('jquery');
 var bootstrap = require('bootstrap');
 var toastr = require('toastr');
-import history from 'config/history'
+import {browserHistory} from 'react-router';
 
 var mui = require('material-ui'),
   FlatButton = mui.FlatButton,
@@ -28,9 +28,6 @@ import {authDecorator} from 'utils/component-utils';
 @connectToStores
 @authDecorator
 export default class App extends React.Component {
-  static contextTypes = {
-    router: React.PropTypes.func
-  }
   static defaultProps = { enterprise: null };
   constructor(props) {
     super(props);
@@ -72,7 +69,7 @@ export default class App extends React.Component {
 
   menuSelect(menu, e, value) {
     if (value == "logout" && menu == "user") UserActions.logout();
-    else history.replaceState(null, value);
+    else browserHistory.push(value);
   }
 
   render() {

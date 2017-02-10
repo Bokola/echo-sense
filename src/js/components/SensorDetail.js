@@ -21,7 +21,7 @@ var IconMenu = mui.IconMenu;
 var MenuItem = mui.MenuItem;
 var api = require('utils/api');
 import connectToStores from 'alt-utils/lib/connectToStores';
-import history from 'config/history'
+import {browserHistory} from 'react-router';
 import {changeHandler} from 'utils/component-utils';
 import {removeItemsById} from 'utils/store-utils';
 import {merge} from 'lodash';
@@ -139,7 +139,7 @@ export default class SensorDetail extends React.Component {
     if (opts != null) {
       util.mergeObject(params, opts);
     }
-    history.replaceState(null, '/app/data', params);
+    browserHistory.push('/app/data', params);
   }
 
   userAdmin() {
@@ -358,6 +358,3 @@ export default class SensorDetail extends React.Component {
   }
 }
 
-SensorDetail.contextTypes = {
-  router: React.PropTypes.func
-};

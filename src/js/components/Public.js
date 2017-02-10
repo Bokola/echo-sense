@@ -5,7 +5,7 @@ var util = require('utils/util');
 
 var bootstrap = require('bootstrap');
 var toastr = require('toastr');
-import history from 'config/history'
+import {browserHistory} from 'react-router';
 
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
@@ -76,7 +76,7 @@ class Public extends React.Component {
 
   navigate_to_page(page) {
     this.handle_leftnav_change(false, function() {
-      history.pushState(null, page);
+      browserHistory.push(page);
     })
   }
 

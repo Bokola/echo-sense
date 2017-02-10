@@ -17,11 +17,9 @@ var MenuItem = mui.MenuItem;
 var DatePicker = mui.DatePicker;
 var TimePicker = mui.TimePicker;
 var toastr = require('toastr');
+import {browserHistory} from 'react-router';
 
 export default class DataViewer extends React.Component {
-    static contextTypes = {
-        router: React.PropTypes.func
-    }
     static defaultProps = { user: null };
 
     constructor(props) {
@@ -156,7 +154,7 @@ export default class DataViewer extends React.Component {
     update_params(_query) {
         var query = this.props.location.query;
         util.mergeObject(query, _query);
-        this.props.history.replaceState(null, `/app/data/${this.props.params.sensorKn}`, query);
+        browserHistory.push(`/app/data/${this.props.params.sensorKn}`, query);
     }
     changeWindow(start_end, date_or_time, null_e, date_obj) {
         var values = {};
@@ -200,7 +198,7 @@ export default class DataViewer extends React.Component {
       var params = {
         sensorKn: this.props.params.sensorKn
       };
-      this.props.history.pushState(null, `/app/data/${params.sensorKn}/record/${r.ts}`);
+      browserHistory.push(`/app/data/${params.sensorKn}/record/${r.ts}`);
     }
 
     handle_export_request() {

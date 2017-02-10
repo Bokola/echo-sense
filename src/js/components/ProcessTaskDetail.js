@@ -28,7 +28,7 @@ var api = require('utils/api');
 var Select = require('react-select');
 import {merge, clone} from 'lodash';
 import connectToStores from 'alt-utils/lib/connectToStores';
-import history from 'config/history'
+import {browserHistory} from 'react-router';
 import {changeHandler} from 'utils/component-utils';
 
 var Link = Router.Link;
