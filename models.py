@@ -1530,11 +1530,11 @@ class Payment(UserAccessible):
         return pmnt
 
     @staticmethod
-    def Fetch(ent=None, user=None, limit=50):
+    def Fetch(ent=None, user=None, limit=50, offset=0):
         if ent:
-            return ent.payment_set.order("-dt_created").fetch(limit=limit)
+            return ent.payment_set.order("-dt_created").fetch(limit=limit, offset=offset)
         elif user:
-            return user.payment_set.order("-dt_created").fetch(limit=limit)
+            return user.payment_set.order("-dt_created").fetch(limit=limit, offset=offset)
         else:
             return []
 

@@ -154,7 +154,7 @@ export default class Logs extends React.Component {
       </div>
     );
     } else if (sec == "apilogs") content = <FetchedList key="apilog" url="/api/apilog" ref="fl_logs" listProp="logs" renderItem={this.renderAPILog.bind(this)} autofetch={true} />
-    else if (sec == "payments") content = <FetchedList key="payment" url="/api/payment" ref="fl_payments" params={{with_user: 1}} listProp="payments" renderItem={this.renderPayment.bind(this)} autofetch={true} />
+    else if (sec == "payments") content = <FetchedList key="payment" url="/api/payment" ref="fl_payments" params={{with_user: 1}} listProp="payments" renderItem={this.renderPayment.bind(this)} autofetch={true} per_page={50} paging_enabled={true} />
     else if (sec == "analyses") content = <FetchedList key="analysis" url="/api/analysis" params={{with_props: 1}} listProp="analyses" renderItem={this.renderAnalysis.bind(this)} autofetch={true} />
     return (
         <div>
