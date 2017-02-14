@@ -84,7 +84,7 @@ export default class AdminSpoof extends React.Component {
 
     render() {
         var _params = this.state.params.map(function(p, i) {
-            return <li><input type="text" placeholder="Key" onChange={this.change_param.bind(this, i, 'key')} value={p.key} /> - <input type="text" placeholder="Value" onChange={this.change_param.bind(this, i, 'value')} value={p.value}/></li>
+            return <li key={i}><input type="text" placeholder="Key" onChange={this.change_param.bind(this, i, 'key')} value={p.key} /> - <input type="text" placeholder="Value" onChange={this.change_param.bind(this, i, 'value')} value={p.value}/></li>
         }, this);
         var opts = this.state.sensors.map(function(s) {
             return {label: s.name, value: s.kn};
