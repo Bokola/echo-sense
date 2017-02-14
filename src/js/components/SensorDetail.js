@@ -132,16 +132,6 @@ export default class SensorDetail extends React.Component {
     if (this.props.onClose) this.props.onClose();
   }
 
-  gotoDataViewer(opts) {
-    var params = {
-      kn: this.state.sensor.kn
-    };
-    if (opts != null) {
-      util.mergeObject(params, opts);
-    }
-    browserHistory.push('/app/data', params);
-  }
-
   userAdmin() {
     return this.props.user && this.props.user.level == 4;
   }

@@ -17,9 +17,9 @@ var MenuItem = mui.MenuItem;
 var DatePicker = mui.DatePicker;
 var TimePicker = mui.TimePicker;
 var toastr = require('toastr');
-import {browserHistory} from 'react-router';
+import {browserHistory, withRouter} from 'react-router';
 
-export default class DataViewer extends React.Component {
+class DataViewer extends React.Component {
     static defaultProps = { user: null };
 
     constructor(props) {
@@ -154,7 +154,10 @@ export default class DataViewer extends React.Component {
     update_params(_query) {
         var query = this.props.location.query;
         util.mergeObject(query, _query);
-        browserHistory.push(`/app/data/${this.props.params.sensorKn}`, query);
+        this.props.router.push({
+            pathname: `/app/data/${this.props.params.sensorKn}`,
+            query: query
+        });
     }
     changeWindow(start_end, date_or_time, null_e, date_obj) {
         var values = {};
@@ -242,7 +245,7 @@ export default class DataViewer extends React.Component {
         this.state.records.forEach(function(r, i, arr) {
             var _cols = [];
             this._list_columns().map(function(colname, j, arr2) {
-                _cols.push(<span title={colname}>{ r.columns[colname] }</span>)
+                _cols.push(<span title={colname} key={j}>{ r.columns[colname] }</span>)
             });
             if (prior_ts != null) {
                 var since_prior = Math.abs(r.ts - prior_ts);
@@ -305,7 +308,7 @@ export default class DataViewer extends React.Component {
             }
         }
         var _advanced_items = [
-          <MenuItem primaryText="Export" value="export" onClick={this.handle_export_request.bind(this)} />
+          <MenuItem key="export" primaryText="Export" value="export" onClick={this.handle_export_request.bind(this)} />
           ];
 
         return (
@@ -379,3 +382,5 @@ export default class DataViewer extends React.Component {
         );
     }
 }
+
+export default withRouter(DataViewer)
