@@ -1256,9 +1256,9 @@ class PaymentAPI(handlers.JsonRequestHandler):
         message = None
 
         with_user = self.request.get_range('with_user') == 1
-        _max = self.request.get_range('max', max_value=500, default=100)
+        page, _max, offset = tools.paging_params(self.request, limit_default=100)
 
-        pmnts = Payment.Fetch(ent=self.enterprise, limit=_max)
+        pmnts = Payment.Fetch(ent=self.enterprise, limit=_max, offset=offset)
         success = True
 
         data = {
