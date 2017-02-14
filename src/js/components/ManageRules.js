@@ -76,7 +76,7 @@ export default class ManageRules extends React.Component {
                 { name: 'payment_amount', label: "Payment Amount (user currency)", editable: true, editOnly: true },
                 { name: 'spec', label: "Processing Spec (JSON)", editable: true, editOnly: true, inputType: 'textarea', hint: "JSON object with processers array property to define optional processing when alarms are fired from rule" }
             ],
-            'add_params': {},
+            'fetch_params': {},
             'unique_key': 'key',
             'max': 50,
             getListFromJSON: function(data) { return data.data.rules; },

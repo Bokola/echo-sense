@@ -68,7 +68,7 @@ export default class AdminManage extends React.Component {
                         fromValue: function(type_id) { return that.props.sensor_types[type_id].name; }
                     }
                 ],
-                'add_params': {},
+                'fetch_params': {},
                 'unique_key': 'key',
                 'max': 50,
                 getListFromJSON: function(data) { return data.data.enterprises; },
