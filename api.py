@@ -165,6 +165,7 @@ class UserAPI(handlers.JsonRequestHandler):
         order_by = self.request.get('order_by')
         email_filter = self.request.get('email')
         users = []
+        success = False
         if email_filter:
             user = User.GetByEmail(email_filter)
             if user:
