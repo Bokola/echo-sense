@@ -163,24 +163,24 @@ class ExpressionParser(object):
             args = self.__getArglist(args)
             if args:
                 return [sum(args)]
-            return 0
+            return [0]
         elif fnName == 'AVE':
             from tools import average
             args = self.__getArglist(args)
             if args:
                 return [average(args)]
-            return 0
+            return [0]
         elif fnName == 'MAX':
             args = self.__getArglist(args)
             if args:
                 res = max(args)
                 return [res]
-            return 0
+            return [0]
         elif fnName == "MIN":
             args = self.__getArglist(args)
             if args:
                 return [min(args)]
-            return 0
+            return [0]
         elif fnName == "COUNT":
             args = self.__getArglist(args)
             return [len(args)]
@@ -193,7 +193,7 @@ class ExpressionParser(object):
                 rule_id = int(args[0])
                 if rule_id:
                     alarm_list = [al for al in alarm_list if tools.getKey(Alarm, 'rule', al, asID=True) == rule_id]
-            return alarm_list
+            return [alarm_list]
         elif fnName == "DISTANCE":
             dist = 0
             last_gp = None
@@ -204,10 +204,10 @@ class ExpressionParser(object):
                     dist += tools.calcLocDistance(last_gp, gp)
                 if gp:
                     last_gp = gp
-            return dist  # m
+            return [dist]  # m
         elif fnName == "SQRT":
             arg = args[0]
-            return math.sqrt(arg)
+            return [math.sqrt(arg)]
         elif fnName == "SINCE":
             # Returns ms since event (argument), or 0 if none found
             event = args[0]
@@ -226,7 +226,7 @@ class ExpressionParser(object):
                         since = now - tools.unixtime(event.dt_recorded)
             except Exception, e:
                 logging.warning("Error in SINCE() - %s" % e)
-            return since
+            return [since]
         elif fnName == "LAST_ALARM":
             # Takes optional argument of rule ID to filter alarms
             from models import Alarm
@@ -244,7 +244,7 @@ class ExpressionParser(object):
                     last_alarm = self.analysis.sensor.alarm_set.order("-dt_end").get()
             return [last_alarm]
         elif fnName == "NOW":
-            return self.run_ms
+            return [self.run_ms]
         elif fnName == "DOT":
             # Calculate dot product. Args 1 and 2 must be numeric aggregate/lists of same size.
             res = 0
