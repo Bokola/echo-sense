@@ -151,6 +151,12 @@ indexes:
   - name: dt_created
     direction: desc
 
+- kind: Report
+  properties:
+  - name: enterprise
+  - name: dt_created
+    direction: desc
+
 # TO VACUUM
 
 # - kind: Record
@@ -180,3 +186,4 @@ indexes:
 # manually, move them above the marker line.  The index.yaml file is
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
+

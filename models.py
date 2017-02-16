@@ -1947,7 +1947,6 @@ class Alarm(db.Model):
 
 class Report(UserAccessible):
     """
-    Parent - Enterprise
     Key - ID
     """
     enterprise = db.ReferenceProperty(Enterprise)
@@ -1983,7 +1982,7 @@ class Report(UserAccessible):
 
     @staticmethod
     def Fetch(e, limit=50):
-        return Report.all().ancestor(e).order("-dt_created").fetch(limit=limit)
+        return e.report_set.order("-dt_created").fetch(limit=limit)
 
     def getDuration(self):
         if self.dt_created and self.dt_generated:
@@ -2036,7 +2035,7 @@ class Report(UserAccessible):
     @staticmethod
     def Create(ent, title="Unnamed Report", type=REPORT.SENSOR_DATA_REPORT, specs=None, ftype=None):
         logging.debug("Requesting report creation, type %d specs: %s" % (type, specs))
-        r = Report(title=title, type=type, enterprise=ent, parent=ent)
+        r = Report(title=title, type=type, enterprise=ent)
         if specs:
             r.setSpecs(specs)
         r.storage_type = REPORT.GCS_CLIENT
