@@ -74,7 +74,7 @@ class ExpressionParser(object):
         return value
 
     def __evalCurrentValue(self, toks):
-        return self.analysis.columnValue(self.column, 0)
+        return [self.analysis.columnValue(self.column, 0)]
 
     def __evalAggregateColumn(self, toks):
         column = toks[0]
@@ -91,7 +91,7 @@ class ExpressionParser(object):
         if not self.record:
             raise Exception("Can't evaluate single column with no record")
         val = self.record.columnValue(column)
-        return val
+        return [val]
 
     def __multOp(self, toks):
         value = toks[0]
@@ -273,21 +273,18 @@ class ExpressionParser(object):
                 return [None]
         return 0
 
-
     def _getPattern(self):
         arith_expr = Forward()
         comp_expr = Forward()
         logic_expr = Forward()
         LPAR, RPAR, SEMI = map(Suppress, "();")
-        identifier = Word(alphas+"_", alphanums+"_")
         multop = oneOf('* /')
         plusop = oneOf('+ -')
-        expop = Literal( "^" )
+        expop = Literal("^")
         compop = oneOf('> < >= <= != ==')
         andop = Literal("AND")
         orop = Literal("OR")
-        current_value = Literal( "." )
-        assign = Literal( "=" )
+        current_value = Literal(".")
         # notop = Literal('NOT')
         function = oneOf(' '.join(self.FUNCTIONS))
         function_call = Group(function.setResultsName('fn') + LPAR + Optional(delimitedList(arith_expr)) + RPAR)
@@ -330,7 +327,6 @@ class ExpressionParser(object):
 
     def _parse_it(self):
         if self.expr:
-            # logging.debug("Parsing: %s" % self.expr)
             # try parsing the input string
             try:
                 L = self.pattern.parseString(self.expr)
