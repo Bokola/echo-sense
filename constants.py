@@ -224,9 +224,9 @@ class RECORD():
 
 # Message channels
 class CHANNEL():
-  EMAIL = 1
-  SMS = 2
-  GCM = 3 # Google cloud message (push)
+    EMAIL = 1
+    SMS = 2
+    GCM = 3 # Google cloud message (push)
 
 
 class PAYMENT():
@@ -250,6 +250,7 @@ class PAYMENT():
     STATUS_LABELS = {REQUESTED: "Requested", SENT: "Sent", CONFIRMED: "Confirmed", FAILED: "Failed"}
     DIRECTION_LABELS = {TO: "To", FROM: "From"}
 
+
 class UI():
 
   # UI Message Levels
@@ -259,25 +260,35 @@ class UI():
 
 
 class ERROR():
-  OK = 0
-  UNAUTHORIZED = 1
-  BAD_TOKEN = 2
-  USER_NOT_FOUND = 3
-  MALFORMED = 4
-  AUTH_FAILED = 5
-  SENSOR_NOT_FOUND = 6
+    OK = 0
+    UNAUTHORIZED = 1
+    BAD_TOKEN = 2
+    USER_NOT_FOUND = 3
+    MALFORMED = 4
+    AUTH_FAILED = 5
+    SENSOR_NOT_FOUND = 6
 
-  OTHER = 99
+    OTHER = 99
 
-  LABELS = {OK: "OK", UNAUTHORIZED: "Unauthorized", BAD_TOKEN: "Bad Token", USER_NOT_FOUND: "User not found", MALFORMED: "Malformed Request!", AUTH_FAILED: "Auth failed"}
+    LABELS = {OK: "OK", UNAUTHORIZED: "Unauthorized", BAD_TOKEN: "Bad Token", USER_NOT_FOUND: "User not found", MALFORMED: "Malformed Request!", AUTH_FAILED: "Auth failed"}
+
 
 class USER():
+    # Level
     LIMITED_READ = 1
     LIMITED_READ_WRITE = 2
     ACCOUNT_ADMIN = 3
     ADMIN = 4
 
+    # Status
+    ACTIVE = 1
+    INACTIVE = 2
+
     LABELS = {LIMITED_READ: "Limited (Read Only)", LIMITED_READ_WRITE: "Limited", ACCOUNT_ADMIN: "Account Admin", ADMIN: "Admin"}
+    STATUS_LABELS = {
+        ACTIVE: "Active",
+        INACTIVE: "Inactive"
+    }
 
 # Memcache keys and prefixes
 MC_EXPORT_STATUS = "MC_EXPORT_STATUS_%s"
