@@ -126,7 +126,7 @@ class EditForm extends React.Component {
           );
         } else if (att.inputType == 'select') {
           var opts = att.opts.map(function(opt,i,arr) {
-            return {value: opt.val || opt.value, label: opt.lab || opt.label}
+            return {value: opt.val != null ? opt.val : opt.value, label: opt.lab || opt.label}
           });
           var boundOnChange = att.multiple ? this.handleMultiValChange.bind(this, att.name) : this.handleSelectChange.bind(this, att.name);
           _input = (

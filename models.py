@@ -325,8 +325,8 @@ class User(UserAccessible):
                 self.setPass(params['password'])
         if 'group_ids' in params:
             self.group_ids = [int(gid) for gid in params['group_ids']]
-        if 'alert_channel' in params:
-            self.alert_channel = int(params['alert_channel'])
+        if params.get('alert_channel') is not None:
+            self.alert_channel = int(params.get('alert_channel', 0))
         if 'av_data_key' in params:
             self.av_data_key = params['av_data_key']
         if 'av_content_type' in params:
