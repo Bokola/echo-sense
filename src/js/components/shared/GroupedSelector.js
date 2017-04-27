@@ -25,8 +25,8 @@ var GroupStore = require('stores/GroupStore');
 var IconMenu = mui.IconMenu;
 var MenuItem = mui.MenuItem;
 var api = require('utils/api');
-import connectToStores from 'alt/utils/connectToStores';
-import history from 'config/history'
+import connectToStores from 'alt-utils/lib/connectToStores';
+import {browserHistory} from 'react-router';
 
 var Link = Router.Link;
 

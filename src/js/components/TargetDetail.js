@@ -20,8 +20,8 @@ var MenuItem = mui.MenuItem;
 var TargetStore = require('stores/TargetStore');
 var TargetActions = require('actions/TargetActions');
 var api = require('utils/api');
-import connectToStores from 'alt/utils/connectToStores';
-import history from 'config/history'
+import connectToStores from 'alt-utils/lib/connectToStores';
+import {browserHistory} from 'react-router';
 
 var Link = Router.Link;
 
@@ -94,7 +94,7 @@ export default class TargetDetail extends React.Component {
   }
 
   gotoSensor(s) {
-    history.pushState(null, `/app/sensors/${s.kn}`);
+    browserHistory.push(`/app/sensors/${s.kn}`);
   }
 
   userAdmin() {

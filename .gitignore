@@ -9,3 +9,4 @@ docs/_build/*
 lib/*
 !lib/__init__.py
 *.DS_Store
+jest/*

@@ -7,7 +7,7 @@ var mui = require('material-ui'),
   FlatButton = mui.FlatButton,
   FontIcon = mui.FontIcon,
   MenuItem = mui.MenuItem;
-import history from 'config/history'
+import {browserHistory} from 'react-router';
 
 export default class Analyze extends React.Component {
   static defaultProps = {}
@@ -27,7 +27,7 @@ export default class Analyze extends React.Component {
   }
 
   section_change(section) {
-    history.pushState(null, `/app/processing/${section}`)
+    browserHistory.push(`/app/processing/${section}`)
   }
 
   render() {

@@ -94,11 +94,13 @@ class UpdateGoogleKeyCerts(handlers.BaseRequestHandler):
         cert = services.UpdateGoogleKeyCerts()
         self.json_out(cert)
 
-class ManualGCM(handlers.BaseRequestHandler):
+class ManualGCM(handlers.JsonRequestHandler):
     """
     """
     @authorized.role('admin')
     def post(self, d):
+        success = False
+        api_message = None
         message = self.request.get('message')
         if message:
             data = json.loads(message)
@@ -106,12 +108,19 @@ class ManualGCM(handlers.BaseRequestHandler):
             data = None
         user_ids_raw = self.request.get('user_ids')
         if user_ids_raw:
-            users = User.get([int(_id.strip()) for _id in user_ids_raw.split(',') if _id])
+            users = User.get_by_id([int(_id.strip()) for _id in user_ids_raw.split(',') if _id])
         else:
             users = []
         if len(users) and data:
             outbox.send_gcm_message(payload=data, users=users)
-        self.redirect_to('vAdminGCM', n=len(users))
+            success = True
+            api_message = "Sending message..."
+        else:
+            api_message = "No users..."
+        self.json_out({
+            'success': success,
+            'message': api_message
+        })
 
 class CreateUser(handlers.BaseRequestHandler):
     @authorized.role("admin")

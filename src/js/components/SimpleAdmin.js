@@ -126,7 +126,7 @@ class EditForm extends React.Component {
           );
         } else if (att.inputType == 'select') {
           var opts = att.opts.map(function(opt,i,arr) {
-            return {value: opt.val || opt.value, label: opt.lab || opt.label}
+            return {value: opt.val != null ? opt.val : opt.value, label: opt.lab || opt.label}
           });
           var boundOnChange = att.multiple ? this.handleMultiValChange.bind(this, att.name) : this.handleSelectChange.bind(this, att.name);
           _input = (
@@ -274,7 +274,8 @@ export default class SimpleAdmin extends React.Component {
       id: 'sa',
       max: 50,
       table_class: '',
-      add_params: {},
+      fetch_params: {}, // Add params to fetch/list call
+      update_params: {}, // Add params to update/create call
       getListFromJSON: null,
       getObjectFromJSON: null,
       style: 'table',
@@ -317,7 +318,7 @@ export default class SimpleAdmin extends React.Component {
     this.setState({loading: true});
     var nextPage = this.state.page;
     var data = {max: this.props.max || 100, page: nextPage};
-    util.mergeObject(data, this.props.add_params);
+    util.mergeObject(data, this.props.fetch_params);
     $.ajax({
       url: this.props.url,
       dataType: 'json',
@@ -390,7 +391,7 @@ export default class SimpleAdmin extends React.Component {
     var creating_new = this.state.status == 'new';
     var st = {};
     var data = this.state.selected;
-    util.mergeObject(data, this.props.add_params);
+    util.mergeObject(data, this.props.update_params);
     this.props.attributes.forEach(function(att, i) {
       if (att.multiple && data[att.name] instanceof Array) data[att.name] = data[att.name].join(',');
     });

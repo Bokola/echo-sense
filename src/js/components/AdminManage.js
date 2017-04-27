@@ -6,7 +6,7 @@ var AppConstants = require('constants/AppConstants');
 var SensorTypeActions = require('actions/SensorTypeActions');
 var SensorTypeStore = require('stores/SensorTypeStore');
 var util = require('utils/util');
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 var mui = require('material-ui'),
   FlatButton = mui.FlatButton,
   FontIcon = mui.FontIcon,
@@ -68,7 +68,7 @@ export default class AdminManage extends React.Component {
                         fromValue: function(type_id) { return that.props.sensor_types[type_id].name; }
                     }
                 ],
-                'add_params': {},
+                'fetch_params': {},
                 'unique_key': 'key',
                 'max': 50,
                 getListFromJSON: function(data) { return data.data.enterprises; },

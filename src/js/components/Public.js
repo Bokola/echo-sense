@@ -5,7 +5,7 @@ var util = require('utils/util');
 
 var bootstrap = require('bootstrap');
 var toastr = require('toastr');
-import history from 'config/history'
+import {browserHistory} from 'react-router';
 
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
@@ -22,7 +22,7 @@ var UserActions = require('actions/UserActions');
 var UserStore = require('stores/UserStore');
 var AppConstants = require('constants/AppConstants');
 
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 import {changeHandler} from 'utils/component-utils';
 
 @connectToStores
@@ -76,7 +76,7 @@ class Public extends React.Component {
 
   navigate_to_page(page) {
     this.handle_leftnav_change(false, function() {
-      history.pushState(null, page);
+      browserHistory.push(page);
     })
   }
 

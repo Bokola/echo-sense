@@ -163,8 +163,20 @@ class UserAPI(handlers.JsonRequestHandler):
         message = None
         page, max, offset = tools.paging_params(self.request, limit_default=100)
         order_by = self.request.get('order_by')
-        users = User.Fetch(self.enterprise, order_by=order_by, limit=max, offset=offset)
-        success = True
+        email_filter = self.request.get('email')
+        users = []
+        success = False
+        if email_filter:
+            user = User.GetByEmail(email_filter)
+            if user:
+                users.append(user)
+                success = True
+            else:
+                message = "User with email %s not found" % email_filter
+
+        else:
+            users = User.Fetch(self.enterprise, order_by=order_by, limit=max, offset=offset)
+            success = True
         data = {
             'users': [user.json() for user in users]
             }
@@ -650,12 +662,12 @@ class TargetAPI(handlers.JsonRequestHandler):
         success = False
         message = None
 
-        _max = self.request.get_range('max', max_value=500, default=100)
+        page, _max, offset = tools.paging_params(self.request, limit_default=100)
         ms_updated_since = self.request.get_range('updated_since', default=0)  # ms
         group_id = self.request.get_range("group_id")
 
         updated_since = tools.dt_from_ts(ms_updated_since) if ms_updated_since else None
-        targets = Target.Fetch(d['user'], updated_since=updated_since, group_id=group_id, limit=_max)
+        targets = Target.Fetch(d['user'], updated_since=updated_since, group_id=group_id, limit=_max, offset=offset)
         success = True
 
         data = {
@@ -1245,9 +1257,9 @@ class PaymentAPI(handlers.JsonRequestHandler):
         message = None
 
         with_user = self.request.get_range('with_user') == 1
-        _max = self.request.get_range('max', max_value=500, default=100)
+        page, _max, offset = tools.paging_params(self.request, limit_default=100)
 
-        pmnts = Payment.Fetch(ent=self.enterprise, limit=_max)
+        pmnts = Payment.Fetch(ent=self.enterprise, limit=_max, offset=offset)
         success = True
 
         data = {

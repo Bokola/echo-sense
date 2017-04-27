@@ -28,7 +28,7 @@ var IconMenu = mui.IconMenu;
 var MenuItem = mui.MenuItem;
 var bootbox = require('bootbox');
 var Link = Router.Link;
-import history from 'config/history'
+import {browserHistory} from 'react-router';
 
 export default class Groups extends React.Component {
   static defaultProps = {
@@ -52,8 +52,8 @@ export default class Groups extends React.Component {
   }
 
   gotoGroup(g) {
-    if (g==null) history.replaceState(null, `/app/groups`);
-    else history.replaceState(null, `/app/groups/${g.id}`);
+    if (g==null) browserHistory.push(`/app/groups`);
+    else browserHistory.push(`/app/groups/${g.id}`);
   }
 
   closeDetail() {

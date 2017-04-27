@@ -23,7 +23,7 @@ var IconMenu = mui.IconMenu;
 
 
 var Link = Router.Link;
-import history from 'config/history'
+import {browserHistory} from 'react-router';
 
 export default class Targets extends React.Component {
   static defaultProps = {
@@ -63,8 +63,8 @@ export default class Targets extends React.Component {
     });
   }
   gotoTarget(t) {
-    if (t==null) history.replaceState(null, `/app/targets`);
-    else history.replaceState(null, `/app/targets/${t.id}`);
+    if (t==null) browserHistory.push(`/app/targets`);
+    else browserHistory.push(`/app/targets/${t.id}`);
   }
   closeDetail() {
     this.gotoTarget(null);

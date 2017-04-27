@@ -13,10 +13,6 @@ var $ = require('jquery');
 Dropzone.autoDiscover = false;
 
 var ResourceDropzone = React.createClass({displayName: 'ResourceDropzone',
-  propTypes: {
-    gcs_bucket: React.PropTypes.any.isRequired,
-    uploadHandler: React.PropTypes.any.isRequired
-  },
   previewTemplate: "<li class='list-group-item'>"+
       "<span data-dz-name></span>"+
       "<span class='sub right' data-dz-size></span>"+

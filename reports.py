@@ -434,12 +434,11 @@ class AnalysisReportWorker(GCSReportWorker):
             self.FILTERS.append(("dt_created <", tools.dt_from_ts(end)))
         if sensortype_id:
             self.FILTERS.append(("sensortype =", db.Key.from_path('Enterprise', self.enterprise.key().id(), 'SensorType', int(sensortype_id))))
-        self.sensor_lookup = tools.lookupDict(Sensor, self.enterprise.sensor_set.fetch(limit=200), valueTransform=lambda s : s.name)
-        self.headers = ["Key","Sensor","Created","Updated"] + self.columns
-
+        self.headers = ["Key", "Sensor", "Created", "Updated"] + self.columns
+        self.prefetch_props = ['sensor']
 
     def entityData(self, analysis):
-        sensor_name = self.sensor_lookup.get(tools.getKey(Analysis, 'sensor', analysis, asID=False), "")
+        sensor_name = analysis.sensor.name if analysis.sensor else ""
         row = [analysis.key().name(), sensor_name, tools.sdatetime(analysis.dt_created), tools.sdatetime(analysis.dt_updated)]
         for col in self.columns:
             value = analysis.columnValue(col, default="")

@@ -325,8 +325,8 @@ class User(UserAccessible):
                 self.setPass(params['password'])
         if 'group_ids' in params:
             self.group_ids = [int(gid) for gid in params['group_ids']]
-        if 'alert_channel' in params:
-            self.alert_channel = int(params['alert_channel'])
+        if params.get('alert_channel') is not None:
+            self.alert_channel = int(params.get('alert_channel', 0))
         if 'av_data_key' in params:
             self.av_data_key = params['av_data_key']
         if 'av_content_type' in params:
@@ -498,14 +498,14 @@ class Target(UserAccessible):
         return self.name
 
     @staticmethod
-    def Fetch(user, updated_since=None, group_id=None, limit=50):
+    def Fetch(user, updated_since=None, group_id=None, limit=50, offset=0):
         e = user.enterprise
         q = Target.all().ancestor(e)
         if updated_since:
             q.filter("dt_updated >", updated_since)
         elif group_id:
             q.filter("group_ids =", group_id)
-        targets = q.fetch(limit=limit)
+        targets = q.fetch(limit=limit, offset=offset)
         if user.is_admin() or user.is_account_admin():
             # Fetch all targets in ent
             return targets
@@ -1450,7 +1450,7 @@ class SensorProcessTask(db.Model):
                     bgRunSensorProcess,
                     self.process_task_name(),
                     interval_mins=mins,
-                    max_jitter_pct=0.3,
+                    max_jitter_pct=0.5,
                     sptkey=str(self.key()),
                     _queue="processing-queue-new")
         else:
@@ -1530,11 +1530,11 @@ class Payment(UserAccessible):
         return pmnt
 
     @staticmethod
-    def Fetch(ent=None, user=None, limit=50):
+    def Fetch(ent=None, user=None, limit=50, offset=0):
         if ent:
-            return ent.payment_set.order("-dt_created").fetch(limit=limit)
+            return ent.payment_set.order("-dt_created").fetch(limit=limit, offset=offset)
         elif user:
-            return user.payment_set.order("-dt_created").fetch(limit=limit)
+            return user.payment_set.order("-dt_created").fetch(limit=limit, offset=offset)
         else:
             return []
 
@@ -1947,7 +1947,6 @@ class Alarm(db.Model):
 
 class Report(UserAccessible):
     """
-    Parent - Enterprise
     Key - ID
     """
     enterprise = db.ReferenceProperty(Enterprise)
@@ -1983,7 +1982,7 @@ class Report(UserAccessible):
 
     @staticmethod
     def Fetch(e, limit=50):
-        return Report.all().ancestor(e).order("-dt_created").fetch(limit=limit)
+        return e.report_set.order("-dt_created").fetch(limit=limit)
 
     def getDuration(self):
         if self.dt_created and self.dt_generated:
@@ -2036,7 +2035,7 @@ class Report(UserAccessible):
     @staticmethod
     def Create(ent, title="Unnamed Report", type=REPORT.SENSOR_DATA_REPORT, specs=None, ftype=None):
         logging.debug("Requesting report creation, type %d specs: %s" % (type, specs))
-        r = Report(title=title, type=type, enterprise=ent, parent=ent)
+        r = Report(title=title, type=type, enterprise=ent)
         if specs:
             r.setSpecs(specs)
         r.storage_type = REPORT.GCS_CLIENT

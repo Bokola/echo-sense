@@ -19,7 +19,7 @@ var mui = require('material-ui'),
   FlatButton = mui.FlatButton,
   FontIcon = mui.FontIcon;
 
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 
 @connectToStores
 export default class Manage extends React.Component {
@@ -86,7 +86,7 @@ export default class Manage extends React.Component {
                     { name: 'group_ids', label: "Groups", editable: true, editOnly: true, inputType: "select", multiple: true, opts: group_opts },
                     { name: 'target_id', label: "Target", editable: true, editOnly: false, inputType: "select", opts: target_opts, fromValue: function(target_id) { return (that.props.targets[target_id] != null) ? that.props.targets[target_id].name : "-"; } }
                 ],
-                'add_params': {},
+                'fetch_params': {},
                 'unique_key': 'key',
                 'max': 50,
                 getListFromJSON: function(data) { return data.data.sensors; },
@@ -106,7 +106,7 @@ export default class Manage extends React.Component {
                         hint: "JSON object, e.g. {\"length\": {\"unit\": \"m\", \"type\": \"number\"}}",
                         editOnly: true, inputType: "textarea" }
                 ],
-                'add_params': {},
+                'fetch_params': {},
                 'unique_key': 'key',
                 'max': 50,
                 getListFromJSON: function(data) { return data.data.sensortypes; },
@@ -129,7 +129,8 @@ export default class Manage extends React.Component {
                     { name: 'lon', label: "Longitude", editable: true },
                     { name: 'group_ids', label: "Groups", editable: true, editOnly: true, inputType: "select", multiple: true, opts: group_opts }
                 ],
-                'add_params': {},
+                'fetch_params': {},
+
                 'unique_key': 'key',
                 'max': 50,
                 getListFromJSON: function(data) { return data.data.targets; },

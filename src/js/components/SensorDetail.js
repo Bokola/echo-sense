@@ -20,8 +20,8 @@ var UserStore = require('stores/UserStore');
 var IconMenu = mui.IconMenu;
 var MenuItem = mui.MenuItem;
 var api = require('utils/api');
-import connectToStores from 'alt/utils/connectToStores';
-import history from 'config/history'
+import connectToStores from 'alt-utils/lib/connectToStores';
+import {browserHistory} from 'react-router';
 import {changeHandler} from 'utils/component-utils';
 import {removeItemsById} from 'utils/store-utils';
 import {merge} from 'lodash';
@@ -130,16 +130,6 @@ export default class SensorDetail extends React.Component {
 
   close() {
     if (this.props.onClose) this.props.onClose();
-  }
-
-  gotoDataViewer(opts) {
-    var params = {
-      kn: this.state.sensor.kn
-    };
-    if (opts != null) {
-      util.mergeObject(params, opts);
-    }
-    history.replaceState(null, '/app/data', params);
   }
 
   userAdmin() {
@@ -358,6 +348,3 @@ export default class SensorDetail extends React.Component {
   }
 }
 
-SensorDetail.contextTypes = {
-  router: React.PropTypes.func
-};

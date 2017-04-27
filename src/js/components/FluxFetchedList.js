@@ -8,7 +8,7 @@ var List = mui.List;
 var ListItem = mui.ListItem;
 var util = require('utils/util');
 var $ = require('jquery');
-import connectToStores from 'alt/utils/connectToStores';
+import connectToStores from 'alt-utils/lib/connectToStores';
 
 export default class FluxFetchedList extends React.Component {
   static defaultProps = {

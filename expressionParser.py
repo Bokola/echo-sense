@@ -74,7 +74,7 @@ class ExpressionParser(object):
         return value
 
     def __evalCurrentValue(self, toks):
-        return self.analysis.columnValue(self.column, 0)
+        return [self.analysis.columnValue(self.column, 0)]
 
     def __evalAggregateColumn(self, toks):
         column = toks[0]
@@ -91,7 +91,7 @@ class ExpressionParser(object):
         if not self.record:
             raise Exception("Can't evaluate single column with no record")
         val = self.record.columnValue(column)
-        return val
+        return [val]
 
     def __multOp(self, toks):
         value = toks[0]
@@ -145,7 +145,7 @@ class ExpressionParser(object):
         return float(toks[0])
 
     def __getArglist(self, args):
-        if type(args) is list:
+        if type(args) is list and len(args) > 0:
             first = args[0]
             if type(first) is list:
                 return first
@@ -163,24 +163,24 @@ class ExpressionParser(object):
             args = self.__getArglist(args)
             if args:
                 return [sum(args)]
-            return 0
+            return [0]
         elif fnName == 'AVE':
             from tools import average
             args = self.__getArglist(args)
             if args:
                 return [average(args)]
-            return 0
+            return [0]
         elif fnName == 'MAX':
             args = self.__getArglist(args)
             if args:
                 res = max(args)
                 return [res]
-            return 0
+            return [0]
         elif fnName == "MIN":
             args = self.__getArglist(args)
             if args:
                 return [min(args)]
-            return 0
+            return [0]
         elif fnName == "COUNT":
             args = self.__getArglist(args)
             return [len(args)]
@@ -193,7 +193,7 @@ class ExpressionParser(object):
                 rule_id = int(args[0])
                 if rule_id:
                     alarm_list = [al for al in alarm_list if tools.getKey(Alarm, 'rule', al, asID=True) == rule_id]
-            return alarm_list
+            return [alarm_list]
         elif fnName == "DISTANCE":
             dist = 0
             last_gp = None
@@ -204,10 +204,10 @@ class ExpressionParser(object):
                     dist += tools.calcLocDistance(last_gp, gp)
                 if gp:
                     last_gp = gp
-            return dist  # m
+            return [dist]  # m
         elif fnName == "SQRT":
             arg = args[0]
-            return math.sqrt(arg)
+            return [math.sqrt(arg)]
         elif fnName == "SINCE":
             # Returns ms since event (argument), or 0 if none found
             event = args[0]
@@ -226,7 +226,7 @@ class ExpressionParser(object):
                         since = now - tools.unixtime(event.dt_recorded)
             except Exception, e:
                 logging.warning("Error in SINCE() - %s" % e)
-            return since
+            return [since]
         elif fnName == "LAST_ALARM":
             # Takes optional argument of rule ID to filter alarms
             from models import Alarm
@@ -244,7 +244,7 @@ class ExpressionParser(object):
                     last_alarm = self.analysis.sensor.alarm_set.order("-dt_end").get()
             return [last_alarm]
         elif fnName == "NOW":
-            return self.run_ms
+            return [self.run_ms]
         elif fnName == "DOT":
             # Calculate dot product. Args 1 and 2 must be numeric aggregate/lists of same size.
             res = 0
@@ -273,21 +273,18 @@ class ExpressionParser(object):
                 return [None]
         return 0
 
-
     def _getPattern(self):
         arith_expr = Forward()
         comp_expr = Forward()
         logic_expr = Forward()
         LPAR, RPAR, SEMI = map(Suppress, "();")
-        identifier = Word(alphas+"_", alphanums+"_")
         multop = oneOf('* /')
         plusop = oneOf('+ -')
-        expop = Literal( "^" )
+        expop = Literal("^")
         compop = oneOf('> < >= <= != ==')
         andop = Literal("AND")
         orop = Literal("OR")
-        current_value = Literal( "." )
-        assign = Literal( "=" )
+        current_value = Literal(".")
         # notop = Literal('NOT')
         function = oneOf(' '.join(self.FUNCTIONS))
         function_call = Group(function.setResultsName('fn') + LPAR + Optional(delimitedList(arith_expr)) + RPAR)
@@ -330,7 +327,6 @@ class ExpressionParser(object):
 
     def _parse_it(self):
         if self.expr:
-            # logging.debug("Parsing: %s" % self.expr)
             # try parsing the input string
             try:
                 L = self.pattern.parseString(self.expr)
