@@ -200,7 +200,8 @@ class UserAPI(handlers.JsonRequestHandler):
         message = None
         id = self.request.get_range('id')
         params = tools.gets(self, strings=['name', 'password', 'phone', 'email', 'location_text', 'currency'],
-            integers=['level', 'alert_channel'], lists=['group_ids'],
+            integers=['level', 'alert_channel', 'status'],
+            lists=['group_ids'],
             json=['custom_attrs'], ignoreMissing=True)
         user = None
         isSelf = False
@@ -1394,6 +1395,7 @@ class Logout(handlers.JsonRequestHandler):
                 del self.session[key]
         self.json_out({'success': True})
 
+
 class Login(handlers.BaseRequestHandler):
     @authorized.role()
     def post(self, d):
@@ -1414,7 +1416,7 @@ class Login(handlers.BaseRequestHandler):
         user = User.FuzzyGet(_login)
         if user:
             ok = False
-            if (pw and user.validatePassword(pw)):
+            if user.is_active() and pw and user.validatePassword(pw):
                 ok = True
             elif token:
                 ok = services.VerifyGoogleJWT(token, email=email)
@@ -1433,7 +1435,7 @@ class Login(handlers.BaseRequestHandler):
             else:
                 user = None
                 error_code = 1 # Unauthorized
-                message = "Login / password mismatch"
+                message = "Login / password mismatch or account inactive"
         elif token:
             # No user, but this is an authenticated G+ login, so let's create the account
             ok = services.VerifyGoogleJWT(token, email=email)

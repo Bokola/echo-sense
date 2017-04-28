@@ -197,6 +197,7 @@ class User(UserAccessible):
     dt_created = db.DateTimeProperty(auto_now_add=True)
     dt_last_login = db.DateTimeProperty(auto_now_add=True)
     level = db.IntegerProperty(default=USER.LIMITED_READ_WRITE)
+    status = db.IntegerProperty(default=USER.ACTIVE)
     group_ids = db.ListProperty(int, default=[])  # IDs of SensorGroup()s user can access
     location_text = db.StringProperty(indexed=False)
     alert_channel = db.IntegerProperty(default=0) # CHANNEL() or 0 for disabled
@@ -217,6 +218,7 @@ class User(UserAccessible):
             'id': self.key().id(),
             'enterprise_id': tools.getKey(User, 'enterprise', self, asID=True),
             'level':self.level,
+            'status':self.status,
             'level_name':self.print_level(),
             'name': self.name,
             'email':self.email,
@@ -262,7 +264,6 @@ class User(UserAccessible):
             if phone:
                 return User.GetByPhone(phone)
         return None
-
 
     @staticmethod
     def GetByEmail(email):
@@ -318,6 +319,8 @@ class User(UserAccessible):
             self.phone = tools.standardize_phone(params['phone'])
         if 'level' in params:
             self.level = params['level']
+        if 'status' in params:
+            self.status = params['status']
         if 'location_text' in params:
             self.location_text = params['location_text']
         if 'password' in params:
@@ -338,7 +341,6 @@ class User(UserAccessible):
         if 'currency' in params:
             self.currency = params['currency']
 
-
     def print_level(self):
         return USER.LABELS.get(self.level)
 
@@ -347,6 +349,9 @@ class User(UserAccessible):
 
     def is_account_admin(self):
         return self.level == USER.ACCOUNT_ADMIN
+
+    def is_active(self):
+        return not self.status or self.status == USER.ACTIVE
 
     def clean_delete(self):
         self.delete()

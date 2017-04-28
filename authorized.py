@@ -16,9 +16,9 @@ def role(role=None):
     def wrapper(handler_method):
         def check_login(self, *args, **kwargs):
             d = {
-                'SITENAME':SITENAME,
+                'SITENAME': SITENAME,
                 'COMPANY_NAME': COMPANY_NAME,
-                'YEAR':datetime.now().year,
+                'YEAR': datetime.now().year,
                 'CURTIME': datetime.now(),
                 'GA_ID': GA_ID,
                 'DEV': tools.on_dev_server(),
@@ -52,7 +52,7 @@ def role(role=None):
                         token = self.request.get('token')
                         if uid:
                             _user = User.get_by_id(uid)
-                            if _user and pw and _user.validatePassword(pw):
+                            if _user and _user.is_active() and pw and _user.validatePassword(pw):
                                 user = _user # Authorized client API
                             else:
                                 error_code = 5 # Auth failed
