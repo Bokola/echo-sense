@@ -66,6 +66,9 @@ export default class ManageUsers extends React.Component {
         var level_opts = AppConstants.USER_LABELS.map(function(label, i) {
             return { lab: label, val: i + 1};
         })
+        var status_opts = AppConstants.USER_STATUS_LABELS.map(function(label, i) {
+            return { lab: label, val: i + 1};
+        })
         let {email_filter} = this.state;
         let params = {
             order_by: 'dt_created',
@@ -83,6 +86,7 @@ export default class ManageUsers extends React.Component {
                 { name: 'email', label: "Email", editable: true },
                 { name: 'currency', label: "Currency (e.g. USD)", editable: true },
                 { name: 'level', label: "Level", editable: true, editOnly: true, inputType: "select", opts: level_opts },
+                { name: 'status', label: "Status", editable: true, editOnly: true, inputType: "select", opts: status_opts },
                 { name: 'password', label: "Password", editable: true, editOnly: true },
                 { name: 'group_ids', label: "Groups", editable: true, editOnly: true, inputType: "select", multiple: true, opts: group_opts },
                 { name: 'alert_channel', label: "Alert Channel", editable: true, editOnly: true, inputType: "select", defaultValue: 0, opts: [

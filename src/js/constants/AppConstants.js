@@ -72,6 +72,7 @@ var AppConstants = {
   USER_ACCOUNT_ADMIN: 3,
   USER_ADMIN: 4,
   USER_LABELS: [ "Read", "Read-Write", "Account Admin", "Admin" ],
+  USER_STATUS_LABELS: [ "Active", "Inactive" ],
   USER_STORAGE_KEY: 'echosenseUser'
 };
 
