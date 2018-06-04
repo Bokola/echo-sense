@@ -17,7 +17,7 @@ var api = require('utils/api');
 var util = require('utils/util');
 var toastr = require('toastr');
 var bootbox = require('bootbox');
-var Select = require('react-select');
+import Select from 'react-select';
 import connectToStores from 'alt-utils/lib/connectToStores';
 import {changeHandler} from 'utils/component-utils';
 import {browserHistory} from 'react-router';

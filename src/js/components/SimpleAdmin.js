@@ -10,7 +10,7 @@ var Dialog = mui.Dialog,
   FlatButton = mui.FlatButton;
 var bootbox = require('bootbox');
 var api = require('utils/api');
-var Select = require('react-select');
+import Select from 'react-select';
 import {removeItemsById} from 'utils/store-utils';
 var RefreshIndicator = mui.RefreshIndicator;
 

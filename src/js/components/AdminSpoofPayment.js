@@ -6,7 +6,7 @@ var AppConstants = require('constants/AppConstants');
 var UserStore = require('stores/UserStore');
 var util = require('utils/util');
 var api = require('utils/api');
-var Select = require('react-select');
+import Select from 'react-select';
 var bootbox = require('bootbox');
 var mui = require('material-ui'),
   FlatButton = mui.FlatButton,

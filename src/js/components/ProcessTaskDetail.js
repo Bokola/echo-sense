@@ -25,7 +25,7 @@ var RuleActions = require('actions/RuleActions');
 var IconMenu = mui.IconMenu;
 var MenuItem = mui.MenuItem;
 var api = require('utils/api');
-var Select = require('react-select');
+import Select from 'react-select';
 import {merge, clone} from 'lodash';
 import connectToStores from 'alt-utils/lib/connectToStores';
 import {browserHistory} from 'react-router';

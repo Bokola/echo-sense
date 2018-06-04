@@ -7,7 +7,7 @@ var LoadStatus = require('./LoadStatus');
 var EntityMap = require('./EntityMap');
 var GChart = require('./GChart');
 var moment = require('moment');
-var Select = require('react-select');
+import Select from 'react-select';
 var mui = require('material-ui');
 var FlatButton = mui.FlatButton;
 var Dialog = mui.Dialog;

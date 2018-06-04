@@ -12,7 +12,7 @@ var SensorTypeActions = require('actions/SensorTypeActions');
 var SensorTypeStore = require('stores/SensorTypeStore');
 var SensorActions = require('actions/SensorActions');
 var SensorStore = require('stores/SensorStore');
-var Select = require('react-select');
+import Select from 'react-select';
 var mui = require('material-ui');
 var FlatButton = mui.FlatButton;
 var Dialog = mui.Dialog;

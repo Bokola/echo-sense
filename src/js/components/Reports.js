@@ -31,7 +31,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import connectToStores from 'alt-utils/lib/connectToStores';
 import {changeHandler} from 'utils/component-utils';
 import {removeItemsById} from 'utils/store-utils';
-var Select = require('react-select');
+import Select from 'react-select';
 import {clone} from 'lodash';
 
 var Link = Router.Link;
