@@ -15,8 +15,8 @@ PRODUCTION_MODE = not os.environ.get(
 ROOT_DIRECTORY = os.path.dirname(__file__)
 
 if not PRODUCTION_MODE:
-      from google.appengine.tools.devappserver2.python import sandbox
-      sandbox._WHITE_LIST_C_MODULES += ['_ctypes', 'gestalt']
+      # from google.appengine.tools.devappserver2.python import sandbox
+      # sandbox._WHITE_LIST_C_MODULES += ['_ctypes', 'gestalt']
       TEMPLATE_DIRECTORY = os.path.join(ROOT_DIRECTORY, 'src')
 else:
       TEMPLATE_DIRECTORY = os.path.join(ROOT_DIRECTORY, 'dist')
@@ -118,6 +118,7 @@ app = webapp2.WSGIApplication(
       webapp2.Route('/api/upload/get_url', handler=api.GetUploadUrl, name="apiGetUploadUrl"),
       webapp2.Route('/api/search', handler=api.SearchAPI, handler_method="search", name="SearchAPI", methods=["GET"]),
       webapp2.Route('/api/search/delete/<doc_key>', handler=api.SearchAPI, handler_method="delete_doc", name="SearchAPI", methods=["GET"]),
+      webapp2.Route('/api/manual_restore', handler=adminActions.ManualDSRestore, methods=["POST", "GET"]),
 
       # Communications
       webapp2.Route('/api/email/send', handler=api.SendEmail, name="apiSendEmail"),
@@ -142,6 +143,7 @@ app = webapp2.WSGIApplication(
       webapp2.Route('/cron/monthly', handler=cronActions.Monthly),
       webapp2.Route('/cron/digests/admin', handler=cronActions.AdminDigest),
       webapp2.Route('/cron/oauth/google_key_certs', handler=adminActions.UpdateGoogleKeyCerts),
+      # webapp2.Route('/cron/delete_entities', handler=adminActions.DeleteRecord),
 
       webapp2.Route(r'/<:.*>', handler=views.EchoSenseApp, name="EchoSenseApp"),
 

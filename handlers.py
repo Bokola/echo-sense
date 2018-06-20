@@ -70,6 +70,9 @@ class BaseRequestHandler(webapp2.RequestHandler):
         self.response.write(json.dumps(out))
         self.response.set_status(_status)
 
+    def log_request_params(self):
+        logging.debug([(arg, self.request.get_all(arg)) for arg in self.request.arguments()])
+
     def process_exception(self, suppressed_exceptions=None):
         exception_name = sys.exc_info()[0].__name__
         exception_details = str(sys.exc_info()[1])

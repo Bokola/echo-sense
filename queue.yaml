@@ -1,11 +1,13 @@
 queue:
 - name: default
-  rate: 1/s
+  rate: 20/s
+  bucket_size: 2
+  max_concurrent_requests: 40
 - name: processing-queue
   rate: 4/s
 - name: processing-queue-new
-  rate: 4/s
-  bucket_size: 2
+  rate: 100/s
+  bucket_size: 20
   max_concurrent_requests: 40
 - name: sms-out-queue
   rate: 3/s
